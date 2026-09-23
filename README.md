@@ -1,205 +1,170 @@
-# resnet50-garbage-classification
+# ResNet50 Garbage Classification
+
 A garbage image classification project using ResNet50 transfer learning with TensorFlow.
 
 本專題為深度學習課程期末作品，使用 ResNet50 與遷移學習建立垃圾影像分類模型，將垃圾影像分類為 cardboard、glass、metal、paper、plastic 與 trash 六種類別。
 
-Project Overview
+## Project Overview
 
 垃圾分類在實際情境中可能因外觀或材質相似而產生判斷差異，因此本專題嘗試透過深度學習影像分類模型，建立較一致的垃圾分類方式。
 
 本研究以 ResNet50 作為模型骨幹，使用 ImageNet 預訓練權重，搭配資料增強、Class Weight、Fine-tuning、Early Stopping 與 ReduceLROnPlateau 進行模型訓練。
 
-Classes
+## Classes
 
 The model classifies images into six categories:
 
-cardboard
+- cardboard
+- glass
+- metal
+- paper
+- plastic
+- trash
 
-glass
-
-metal
-
-paper
-
-plastic
-
-trash
-
-Dataset
+## Dataset
 
 The project uses garbage images from the TrashNet dataset.
 
 本研究選擇六種類別進行分類實驗：
 
-cardboard: 891 images
-
-paper: 1050 images
-
-glass: 607 images
-
-plastic: 865 images
-
-metal: 769 images
-
-trash: 697 images
+- cardboard: 891 images
+- paper: 1050 images
+- glass: 607 images
+- plastic: 865 images
+- metal: 769 images
+- trash: 697 images
 
 The dataset is divided into training and validation sets.
 
-All images are resized to:
+All images are resized to **224 x 224 RGB**.
 
-224 x 224 RGB
+Pixel values are normalized to the range **0 to 1**.
 
-Pixel values are normalized to the range 0 to 1.
+## Data Preprocessing
 
-Data Augmentation
+資料前處理主要包含：
+
+- Resize images to 224 x 224
+- Normalize pixel values to 0 to 1
+- Separate training and validation datasets
+- Load images using ImageDataGenerator
+
+## Data Augmentation
 
 Training images are augmented using:
 
-Rotation
-
-Width shift
-
-Height shift
-
-Brightness adjustment
-
-Zoom
-
-Shear
-
-Horizontal flip
+- Rotation
+- Width shift
+- Height shift
+- Brightness adjustment
+- Zoom
+- Shear
+- Horizontal flip
 
 The validation set is only normalized without augmentation.
 
-Model Architecture
+## Model Architecture
 
 The model is based on ResNet50 with ImageNet pretrained weights.
 
-Input Image
-    |
-    v
-ResNet50 Backbone
-    |
-    v
-Global Average Pooling
-    |
-    v
-Dense (512, ReLU)
-    |
-    v
-Dropout (0.5)
-    |
-    v
-Softmax
-    |
-    v
-6 Classes
+Model structure:
 
-The ResNet50 backbone is fine-tuned by freezing the earlier layers while keeping the final 50 layers trainable.
+- Input Image: 224 x 224 RGB
+- ResNet50 Backbone
+- Global Average Pooling
+- Dense Layer: 512 units with ReLU
+- Dropout: 0.5
+- Softmax Output Layer
+- 6 Output Classes
 
-Training Configuration
+The earlier ResNet50 layers are frozen while the final 50 layers remain trainable for fine-tuning.
 
-Image Size: 224 x 224
+## Training Configuration
 
-Batch Size: 16
+- Image Size: 224 x 224
+- Batch Size: 16
+- Maximum Epochs: 20
+- Optimizer: Adam
+- Learning Rate: 1e-4
+- Loss Function: Categorical Crossentropy
+- Class Weight for class imbalance
+- ReduceLROnPlateau
+- Early Stopping
 
-Maximum Epochs: 20
+## Class Imbalance Handling
 
-Optimizer: Adam
+Because the number of images differs between categories, Class Weight is used during training.
 
-Learning Rate: 1e-4
+This helps reduce the effect of class imbalance and allows categories with fewer samples to contribute more fairly during model training.
 
-Loss Function: Categorical Crossentropy
-
-Class Weight for class imbalance
-
-ReduceLROnPlateau
-
-Early Stopping
-
-Training Results
+## Training Results
 
 During training, the training accuracy gradually increased and the validation accuracy also improved.
 
-The training and validation loss both decreased during the training process, and the validation loss remained relatively stable.
+The training and validation loss both decreased during the training process, while the validation loss remained relatively stable.
 
 The project successfully completed the basic six-class garbage image classification task.
 
-Prediction Demo
+## Prediction Demo
 
-The demo.py program loads the trained model and predicts a single input image.
+The `demo.py` program loads the trained model and predicts a single input image.
 
 The system outputs:
 
-Predicted class
+- Predicted class
+- Confidence score
+- Input image with prediction result
 
-Confidence score
+Example result:
 
-Input image with prediction result
+- Class: glass
+- Confidence: 0.93
 
-Example:
+The prediction result is also displayed together with the input image using Matplotlib.
 
-Prediction:
-Class: glass
-Confidence: 0.93
+## Project Files
 
-Project Files
+- `train.py` - Model training, data augmentation, fine-tuning, class weighting, and model saving
+- `demo.py` - Single image prediction
+- `report.pdf` - Course project report
+- `README.md` - Project documentation
 
-train.py - Model training, fine-tuning, data augmentation, class weighting, and model saving
+## Technologies
 
-demo.py - Single image prediction
+- Python
+- TensorFlow
+- Keras
+- ResNet50
+- NumPy
+- Matplotlib
+- scikit-learn
+- Transfer Learning
+- Image Classification
 
-report.pdf - Course project report
-
-README.md - Project documentation
-
-Technologies
-
-Python
-
-TensorFlow
-
-Keras
-
-ResNet50
-
-NumPy
-
-Matplotlib
-
-scikit-learn
-
-Transfer Learning
-
-Image Classification
-
-Limitations
+## Limitations
 
 The project showed lower prediction confidence for some categories, especially metal, plastic, and trash.
 
 Possible reasons include:
 
-Limited training samples
+- Limited training samples
+- Similar appearance between different garbage categories
+- Similar materials between categories
+- Class imbalance
+- Differences between training images and real-world test images
 
-Similar appearance or material between different garbage categories
-
-Class imbalance
-
-Differences between training images and real-world test images
-
-Future Improvements
+## Future Improvements
 
 Future improvements could include:
 
-Increasing the dataset size
+- Increasing the dataset size
+- Expanding data augmentation strategies
+- Collecting more real-world garbage images
+- Testing different model architectures
+- Improving classification performance for visually similar categories
+- Comparing ResNet50 with other image classification models
 
-Expanding data augmentation strategies
-
-Testing different model architectures
-
-Improving classification performance for visually similar categories
-
-Team Project
+## Team Project
 
 Deep Learning Course Final Project
 

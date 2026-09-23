@@ -1,5 +1,6 @@
 # resnet50-garbage-classification
 A garbage image classification project using ResNet50 transfer learning with TensorFlow.
+
 本專題為深度學習課程期末作品，使用 ResNet50 與遷移學習建立垃圾影像分類模型，將垃圾影像分類為 cardboard、glass、metal、paper、plastic 與 trash 六種類別。
 
 Project Overview
@@ -186,7 +187,17 @@ Class imbalance
 
 Differences between training images and real-world test images
 
-Future improvements could include increasing the dataset size and expanding data augmentation strategies to improve model performance.
+Future Improvements
+
+Future improvements could include:
+
+Increasing the dataset size
+
+Expanding data augmentation strategies
+
+Testing different model architectures
+
+Improving classification performance for visually similar categories
 
 Team Project
 
